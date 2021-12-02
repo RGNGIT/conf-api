@@ -2,7 +2,7 @@ const e = require('express');
 const mysql = require('mysql2');
 
 function openConnection() {
-console.log("Коннекшн открыт. Выполняю запрос...");
+console.log(`Коннекшн открыт. Выполняю запрос...`);
 return new Promise((resolve, reject) => {
   const connection = mysql.createConnection( {
     host: "db.19ivt.ru",
