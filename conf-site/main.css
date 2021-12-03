@@ -1,0 +1,165 @@
+#mainBody {
+    background:rgb(37, 37, 37) url("");
+}
+
+#main-wrap {
+    border-radius: 25px;
+    padding: 10px;
+    background: linear-gradient(to bottom, #616161, #868686);
+}
+
+.delete-btn {
+    display: block;
+    margin-left: auto;
+}
+
+.header-btn {
+    color: black;
+}
+
+#head1 {
+width: 100%;
+height: var(--header-height);
+padding: 0 10px;
+background-color: rgba(88,110,217,1);
+position: fixed;
+z-index: 9999;
+}
+
+.html-inject {
+    width: 100%;
+    height: 720px;
+}
+
+.wrap {
+    margin: 0 auto 0 auto;
+    padding: 0;
+    max-width: 1200px;
+    min-height: 100%;
+    position: relative;
+    background: #838383;
+}
+
+.wrap-content {
+    padding: 0 0 10px 0;
+    min-height: 100%;
+    position: relative;
+    background: repeat-y scroll 0 0;
+    z-index: 10;
+}
+
+.img-undertext {
+    text-align: center;
+}
+
+.post-interaction {
+    
+}
+
+.date-time {
+    float: right;
+}
+
+.news-input {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.inline-btn {
+    margin-left: auto;
+    margin-right: auto;
+    display: inline-block;
+}
+
+.text-areas {
+    width: 100%;
+    transform: translateX(-3px);
+    resize: vertical;
+}
+
+.stat-table {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    word-break: break-all;
+}
+
+.post-media {
+    height: auto;
+    width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.post-media-video {
+    width: 100%;
+}
+
+#login-string {
+    text-decoration: none;
+    color: black;
+    float: right;
+}
+
+#msuimg1 {
+    height: 550px;
+    width: 1000px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#catimg1 {
+    height: 70%;
+    width: 70%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#ourstudent1 {
+    height: 550px;
+    width: 500px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.post-content {
+    text-align: center;
+}
+
+.canvas-header {
+    text-align: center;
+}
+
+.cp-text {
+    text-align: center;
+}
+
+.bottom {
+    padding: 0 0 3px 0;
+}
+
+.header {
+    margin: 0 auto 0 auto;
+    padding: 0;
+    position: absolute;
+    display: inline-block;
+    z-index: 1;
+}
+
+#mainLogo {
+    position: relative;
+    display: inline-block;
+    height: 105px;
+    width: 105px;
+}
+
+#logoText {
+    text-align: center;
+    font-size: 30px;
+    overflow-wrap: anywhere;
+}
