@@ -3,7 +3,7 @@ window.getCookie = (name) => {
     if (match) return match[2];
 }
 
-const server = "http://localhost:8000/";
+const server = "http://localhost:8080/";
 const lloginPrompt = document.querySelector("#l-login");
 const lpasswordPrompt = document.querySelector("#l-password");
 const rloginPrompt = document.querySelector("#r-login");
@@ -35,6 +35,7 @@ function register() {
         }, res => {
             console.log(res);
     });
+    statusLine.innerHTML = "Зареган!";
 }
 
 // Для логина
@@ -63,6 +64,7 @@ function login() {
                     document.cookie = `surname=${resg[0].Surname}`;
                     document.cookie = `patronymic=${resg[0].Patronymic}`;
                     document.cookie = `role-key=${resg[0].Role_Key}`;
+                    setTimeout(window.location = "index.html", 1000);
                 });
             } else {
                 statusLine.innerHTML = "Что-то пошло не так!";

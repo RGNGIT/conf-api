@@ -32,7 +32,7 @@ app.get('/getRoleList', function (req, res) {
 });
 // Получение списка пользователей
 app.get('/getUserList', function (req, res) {
-    queryExec("SELECT * FROM user;")
+    queryExec("SELECT *, user.Key, user.Name, role.Name AS RName FROM user, role WHERE Role_Key = role.Key;")
     .then(result => {
         res.json(result);
     },
@@ -56,7 +56,7 @@ app.get('/getTalkList', function (req, res) {
 });
 
 app.get('/getUserData', function (req, res) {
-    queryExec(`SELECT * FROM user WHERE Login='${req.query.login}';`)
+    queryExec(`SELECT * FROM user WHERE (Login='${req.query.login}');`)
     .then(result => {
         res.json(result);
     });
@@ -91,6 +91,13 @@ app.post('/checkAccount', function (req, res) {
     });
 });
 
-app.listen(8000, () => {
+app.post('/updateRole', function (req, res) {
+    queryExec(`UPDATE user SET Role_Key = ${req.body.rolekey} WHERE user.Key = ${req.body.userkey};`)
+    .then(result =>{
+        res.send(result);
+    });
+});
+
+app.listen(8080, () => {
     console.log("Сервер запущен.");
 });
