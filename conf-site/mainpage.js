@@ -1,11 +1,13 @@
-const server = "http://localhost:8000/";
-const canvas = document.querySelector("#main-canvas");
-const canvasHeader = document.querySelector("#cnv-hdr");
-
 window.getCookie = (name) => {
     var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
     if (match) return match[2];
 }
+
+const server = "http://localhost:8000/";
+const canvas = document.querySelector("#main-canvas");
+const canvasHeader = document.querySelector("#cnv-hdr");
+const userTag = document.querySelector("#user-tag");
+const role = getCookie("role-key");
 
 function showTalksSpeaker() {
     canvas.innerHTML = "<p style='text-align:center;'>Загрузка докладов...</p>";
@@ -47,3 +49,24 @@ function show(toShow) {
             break;
     }
 }
+
+function init() {
+    show('main');
+    if(getCookie("logged-in") == 'true') {
+        let html = `Залогинен как ${getCookie("name")} ${getCookie("surname")} ${getCookie("patronymic")} | `;
+        switch(role) {
+            case '1':
+                html += "Админ";
+                break;
+            case '2':
+                html += "Слушатель";
+                break;
+            case '3':
+                html += "Спикер";
+                break;
+        }
+        userTag.innerHTML = html;
+    }
+}
+
+init();

@@ -55,6 +55,13 @@ app.get('/getTalkList', function (req, res) {
     }
 });
 
+app.get('/getUserData', function (req, res) {
+    queryExec(`SELECT * FROM user WHERE Login='${req.query.login}';`)
+    .then(result => {
+        res.json(result);
+    });
+});
+
 // Посты
 app.post('/regNewUser', function (req, res) {
     queryExec(`INSERT INTO user (Name, Surname, Patronymic, Login, Password, Role_Key) VALUES ('${req.body.name}', '${req.body.surname}', '${req.body.patronymic}', '${req.body.login}', '${MD5Encrypt(req.body.password)}', 2);`)

@@ -1,3 +1,8 @@
+window.getCookie = (name) => {
+    var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    if (match) return match[2];
+}
+
 const server = "http://localhost:8000/";
 const lloginPrompt = document.querySelector("#l-login");
 const lpasswordPrompt = document.querySelector("#l-password");
@@ -51,6 +56,14 @@ function login() {
         }, res => {
             if(res == "LoggedIn") {
                 statusLine.innerHTML = "Успешно залогинен!";
+                $.get(server + `getUserData?login=${lloginPrompt.value}`, resg => {
+                    document.cookie = "logged-in=true";
+                    document.cookie = `login=${resg[0].Login}`;
+                    document.cookie = `name=${resg[0].Name}`;
+                    document.cookie = `surname=${resg[0].Surname}`;
+                    document.cookie = `patronymic=${resg[0].Patronymic}`;
+                    document.cookie = `role-key=${resg[0].Role_Key}`;
+                });
             } else {
                 statusLine.innerHTML = "Что-то пошло не так!";
             }
