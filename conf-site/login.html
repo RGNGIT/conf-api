@@ -1,0 +1,57 @@
+<!--Lab4(MSU)-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Логинимся, не стесняемся</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body id="mainBody">
+    <div id="main-wrap" class="wrap">
+        <div class="wrap-content">
+            <!--Заголовок-->
+            <h id="logoText">
+                Конференция
+            </h>
+        </div>
+        <hr color="black" noshade>
+        <div id="main-canvas" class="page-content">
+            <p class='canvas-header'>Один аккаунт - ноль возможностей!</p>
+            <div class='inline-btn'>
+             <form>
+                <p><input class='news-input' type='text' id='l-login' placeholder='Логин' size='18'/></p>
+                <p><input class='news-input' type='password' id='l-password' placeholder='Пароль' size='18'/></p>
+             </form>
+             <div style="text-align: center;">
+             <button class='inline-btn' onclick='onLogin()'>Войти</button>
+             </div>
+             <p class='canvas-header' id="login-status"></p>
+            </div>
+            <div class='inline-btn'>
+                <form>
+                   <p><input class='news-input' type='text' id='r-name' placeholder='Имя' size='18'/></p>
+                   <p><input class='news-input' type='text' id='r-surname' placeholder='Фамилия' size='18'/></p>
+                   <p><input class='news-input' type='text' id='r-pat' placeholder='Отчество' size='18'/></p>
+                   <p><input class='news-input' type='text' id='r-login' placeholder='Логин' size='18'/></p>
+                   <p><input class='news-input' type='password' id='r-password' placeholder='Пароль' size='18'/></p>
+                </form>
+                <div style="text-align: center;">
+                <button class='inline-btn' onclick='onRegister()'>Зарегаться</button>
+                </div>
+                <p class='canvas-header' id="login-status"></p>
+               </div>
+        </div>
+    <script src="https://yastatic.net/jquery/3.3.1/jquery.min.js"></script>
+    <script src="account-works.js"></script>
+</body>
+    <!--Низ страницы-->
+<footer class="bottom">
+    <hr color="black" noshade>
+    <p class="cp-text">
+        RGN! (c)2021
+        <p class='canvas-header' id='ip-string'></p>
+    </p>
+</footer>
+</html>

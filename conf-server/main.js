@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const {queryExec} = require("./db");
+const {MD5Encrypt} = require("./encrypt");
 
 const app = express();
 
@@ -54,9 +55,33 @@ app.get('/getTalkList', function (req, res) {
     }
 });
 
-// Запросы на добавить чето
-app.post('', () => {
-    
+// Посты
+app.post('/regNewUser', function (req, res) {
+    queryExec(`INSERT INTO user (Name, Surname, Patronymic, Login, Password, Role_Key) VALUES ('${req.body.name}', '${req.body.surname}', '${req.body.patronymic}', '${req.body.login}', '${MD5Encrypt(req.body.password)}', 2);`)
+    .then(suc => {
+        res.send("Done");
+    },
+    err => {
+        res.send("Err");
+    });
+});
+
+app.post('/loginUser', function (req, res) {
+    queryExec(`SELECT * FROM user WHERE Login = '${req.body.login}';`)
+    .then(result => {
+        if(MD5Encrypt(req.body.password) == result[0].Password) {
+            res.send("LoggedIn");
+        } else {
+            res.send("Err");
+        }
+    });
+});
+
+app.post('/checkAccount', function (req, res) {
+    queryExec(`SELECT * FROM user WHERE Login = '${req.body.login}';`)
+    .then(result => {
+        res.send(`${result.length}`);
+    });
 });
 
 app.listen(8000, () => {

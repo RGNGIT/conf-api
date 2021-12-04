@@ -2,8 +2,18 @@ const server = "http://localhost:8000/";
 const canvas = document.querySelector("#main-canvas");
 const canvasHeader = document.querySelector("#cnv-hdr");
 
-function showTalks(toSort) {
-    canvas.innerHTML = "";
+window.getCookie = (name) => {
+    var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    if (match) return match[2];
+}
+
+function showTalksSpeaker() {
+    canvas.innerHTML = "<p style='text-align:center;'>Загрузка докладов...</p>";
+
+}
+
+function showTalksSchedule(toSort) {
+    canvas.innerHTML = "<p style='text-align:center;'>Загрузка расписания...</p>";
     $.get(server + `getTalkList?toSort=${toSort}`)
     .then(res => {
         let auditorium = "";
@@ -25,8 +35,15 @@ function showTalks(toSort) {
 function show(toShow) {
     switch(toShow) {
         case 'main':
-            canvasHeader.innerHTML = "Главная";
-            showTalks(true);
+            canvasHeader.innerHTML = "Главная. Расписание";
+            showTalksSchedule(true);
+            break;
+        case 'talks':
+            canvasHeader.innerHTML = "Доклады";
+            showTalksSpeaker();
+            break;
+        case 'reg':
+            
             break;
     }
 }
