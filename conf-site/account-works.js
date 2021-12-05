@@ -64,6 +64,7 @@ function login() {
                     document.cookie = `surname=${resg[0].Surname}`;
                     document.cookie = `patronymic=${resg[0].Patronymic}`;
                     document.cookie = `role-key=${resg[0].Role_Key}`;
+                    document.cookie = `db-key=${resg[0].Key}`;
                     setTimeout(window.location = "index.html", 1000);
                 });
             } else {

@@ -49,12 +49,27 @@ function showTalksSpeaker() {
 
 function showTalksSchedule(toSort) {
     canvas.innerHTML = "<p style='text-align:center;'>Загрузка расписания...</p>";
-    $.get(server + `getTalkList?toSort=${toSort}`)
+    let id = 0;
+    let toAdd = "";
+    let ignore = [];
+    $.get(server + `getUserSubs?userkey=${getCookie("db-key")}`)
     .then(res => {
+        if(res.length > 0) {
+            toAdd += `<h3 style="text-align:center;">Доклады, на которые вы подписаны</h3>`;
+            for(let i of res) {
+                toAdd += 
+                `<div id='talk-${id}''>` +
+                `<hr color="black" noshade>Доклад: ${i.TName}. Аудитория: ${i.RName}. Время проведения с ${i.DateFrom} по ${i.DateTo}.` +
+                `<button id='${i.SKey}' style='float:right;' onclick='unsubscribe(${getCookie("db-key")}, id)'>${"Отписаться"}</button>` +
+                `</div>`;
+                ignore.push(i.SKey);
+            }
+        }
+    $.get(server + `getTalkList?toSort=${toSort}`)
+    .then(resg => {
         let auditorium = "";
-        let toAdd = "";
-        let id = 0;
-        for(let i of res) {
+        for(let i of resg) {
+            if(!ignore.includes(i.Key)) {
             if(i.RName != auditorium) {
                 toAdd += `<h3 style="text-align:center;">Доклады в аудитории ${i.RName}</h3>`;
                 auditorium = i.RName;
@@ -62,12 +77,14 @@ function showTalksSchedule(toSort) {
             toAdd += 
             `<div id='talk-${id}''>` +
             `<hr color="black" noshade>Доклад: ${i.TName}. Аудитория: ${i.RName}. Время проведения с ${i.DateFrom} по ${i.DateTo}.` +
-            `<button id='${id}' style='float:right;'>${"типа"}</button>` +
+            `<button id='${i.Key}' style='float:right;' onclick='subscribe(${getCookie("db-key")}, id)'>${"Подписаться"}</button>` +
             `</div>`;
             id++;
         }
+        }
         canvas.innerHTML = toAdd;
     });
+});
 }
 
 function regButtonAction() {
@@ -78,6 +95,7 @@ function regButtonAction() {
         document.cookie = `surname=`;
         document.cookie = `patronymic=`;
         document.cookie = `role-key=`;
+        document.cookie = `db-key=`;
         location.reload();
     } else {
         window.location = "login.html";

@@ -43,12 +43,12 @@ app.get('/getUserList', function (req, res) {
 // Получение списка докладов (параметр toSort отсортированый по аудиториям если true, иначе просто список как есть в базе)
 app.get('/getTalkList', function (req, res) {
     if(req.query.toSort == "true") {
-        queryExec("SELECT talk.Name AS TName, DateFrom, DateTo, room.Name AS RName FROM schedule, talk, room WHERE (room.Key = Room_Key AND talk.Key = Talk_Key) ORDER BY RName;")
+        queryExec("SELECT schedule.Key, talk.Name AS TName, DateFrom, DateTo, room.Name AS RName FROM schedule, talk, room WHERE (room.Key = Room_Key AND talk.Key = Talk_Key) ORDER BY RName;")
         .then(result => {
         res.json(result);
     });
     } else {
-        queryExec("SELECT talk.Name AS TName, DateFrom, DateTo, room.Name AS RName FROM schedule, talk, room WHERE (room.Key = Room_Key AND talk.Key = Talk_Key);")
+        queryExec("SELECT schedule.Key, talk.Name AS TName, DateFrom, DateTo, room.Name AS RName FROM schedule, talk, room WHERE (room.Key = Room_Key AND talk.Key = Talk_Key);")
         .then(result => {
             res.json(result);
     });
@@ -65,6 +65,13 @@ app.get('/getUserDataByKey', function (req, res) {
 
 app.get('/getUserDataByLogin', function (req, res) {
     queryExec(`SELECT * FROM user WHERE (Login='${req.query.login}');`)
+    .then(result => {
+        res.json(result);
+    });
+});
+
+app.get('/getUserSubs', function (req, res) {
+    queryExec(`SELECT schedule.Key AS SKey, talk.Name AS TName, schedule.DateFrom, schedule.DateTo, room.Name AS RName FROM talk, schedule, room, user, user_sub WHERE schedule.Room_Key = room.Key AND schedule.Talk_Key = talk.Key AND user_sub.User_Key = user.Key AND schedule.Key = user_sub.Schedule_Key AND user.Key = ${req.query.userkey};`)
     .then(result => {
         res.json(result);
     });
@@ -115,6 +122,20 @@ app.post('/deleteUser', function (req, res) {
 
 app.post('/updateUser', function (req, res) {
     queryExec(`UPDATE user SET Name = '${req.body.name}', Surname = '${req.body.surname}', Patronymic = '${req.body.patronymic}', Login = '${req.body.login}', Role_Key = ${req.body.rolekey} WHERE user.Key = ${req.body.userkey};`)
+    .then(result => {
+        res.send(result);
+    });
+});
+
+app.post('/subToTalk', function (req, res) {
+    queryExec(`INSERT INTO user_sub (User_Key, Schedule_Key) VALUES (${req.body.userkey}, ${req.body.schedulekey});`)
+    .then(result => {
+        res.send(result);
+    });
+});
+
+app.post('/unsubToTalk', function (req, res) {
+    queryExec(`DELETE FROM user_sub WHERE (User_Key = ${req.body.userkey} AND Schedule_Key = ${req.body.schedulekey});`)
     .then(result => {
         res.send(result);
     });
