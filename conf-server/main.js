@@ -55,7 +55,15 @@ app.get('/getTalkList', function (req, res) {
     }
 });
 
-app.get('/getUserData', function (req, res) {
+app.get('/getUserDataByKey', function (req, res) {
+    queryExec(`SELECT * FROM user WHERE (user.Key='${req.query.key}');`)
+    .then(result => {
+        res.json(result);
+    });
+});
+
+
+app.get('/getUserDataByLogin', function (req, res) {
     queryExec(`SELECT * FROM user WHERE (Login='${req.query.login}');`)
     .then(result => {
         res.json(result);
@@ -94,6 +102,20 @@ app.post('/checkAccount', function (req, res) {
 app.post('/updateRole', function (req, res) {
     queryExec(`UPDATE user SET Role_Key = ${req.body.rolekey} WHERE user.Key = ${req.body.userkey};`)
     .then(result =>{
+        res.send(result);
+    });
+});
+
+app.post('/deleteUser', function (req, res) {
+    queryExec(`DELETE FROM user WHERE user.Key = ${req.body.key};`)
+    .then(result => {
+        res.send(result);
+    });
+});
+
+app.post('/updateUser', function (req, res) {
+    queryExec(`UPDATE user SET Name = '${req.body.name}', Surname = '${req.body.surname}', Patronymic = '${req.body.patronymic}', Login = '${req.body.login}', Role_Key = ${req.body.rolekey} WHERE user.Key = ${req.body.userkey};`)
+    .then(result => {
         res.send(result);
     });
 });

@@ -57,7 +57,7 @@ function login() {
         }, res => {
             if(res == "LoggedIn") {
                 statusLine.innerHTML = "Успешно залогинен!";
-                $.get(server + `getUserData?login=${lloginPrompt.value}`, resg => {
+                $.get(server + `getUserDataByLogin?login=${lloginPrompt.value}`, resg => {
                     document.cookie = "logged-in=true";
                     document.cookie = `login=${resg[0].Login}`;
                     document.cookie = `name=${resg[0].Name}`;

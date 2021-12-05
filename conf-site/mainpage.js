@@ -22,14 +22,12 @@ function showUsers() {
                     userRole = i.RName;
                 }
                 toAdd += 
-                `<div id='user-${id}''>` +
-                `<hr color="black" noshade>ФИО: ${i.Name} ${i.Surname} ${i.Patronymic} | ${i.RName}.`;
-                if(i.Role_Key == '3') {
-                    toAdd += `<button id='${i.Key}' style='float:right;' onclick='makeASpeaker(true, id)'>Расжаловать</button>`;
-                } else if(i.Role_Key == '2') {
-                    toAdd += `<button id='${i.Key}' style='float:right;' onclick='makeASpeaker(false, id)'>Назначить спикером</button>`;
-                }
-                toAdd += `</div>`;
+                `<div id='user-${i.Key}''>` +
+                `<hr color="black" noshade>ФИО: ${i.Surname} ${i.Name} ${i.Patronymic} | ${i.RName}.` +
+                `<button id='${i.Key}' style='float:right;' onclick='deleteUser(id)'>Удалить</button>` +
+                `<button id='${i.Key}' style='float:right;' onclick='redactUser(id, document.querySelector("#redact-" + id))'>Редактировать</button>` +
+                `<div id='redact-${i.Key}'></div>` +
+                `</div>`;
                 id++;
             }
             canvas.innerHTML = toAdd;
@@ -109,7 +107,7 @@ function show(toShow) {
 function init() {
     show('main');
     if(getCookie("logged-in") == 'true') {
-        let html = `Залогинен как ${getCookie("name")} ${getCookie("surname")} ${getCookie("patronymic")} | `;
+        let html = `Залогинен как ${getCookie("surname")} ${getCookie("name")} ${getCookie("patronymic")} | `;
         switch(role) {
             case '1':
                 html += "Админ";
