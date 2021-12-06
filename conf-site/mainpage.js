@@ -40,11 +40,19 @@ function showUsers() {
 
 function showTalksSpeaker() {
     if(role == '3') {
-        canvas.innerHTML = "<form><p style='text-align:center'>Регистрация доклада<p>" +
-        `<p><input class='news-input' type='text' id='red-surname' placeholder='Название' size='18'/></p>` + 
-        `</form><div style='text-align: center;'><button class='inline-btn' onclick=''>Зарегистрировать</button></div>`;
-        canvas.innerHTML += "<hr color='black' noshade><div id='talk-list'><p style='text-align:center;'>Загрузка докладов...</p></div>";
-        let list = document.querySelector("#talk-list");
+        $.get(server + 'getRoomList')
+        .then(result => {
+            canvas.innerHTML = "<form><p style='text-align:center'>Регистрация доклада<p>" +
+            `<p><input class='news-input' type='text' id='red-surname' placeholder='Название' size='18'/></p>` + 
+            `<select class='news-input' id='room-select'></select><p></p>` +
+            `<div class='datetime-input'>С <input id='date-from' type='datetime-local'></input> по <input id='date-to' type='datetime-local'></input></div>` +
+            `<p style='text-align:center;' id='talk-status'></p>` +
+            `</form><div style='text-align: center;'><button class='inline-btn' onclick='regNewTalk()'>Зарегистрировать</button></div>`;
+            canvas.innerHTML += "<hr color='black' noshade><div id='talk-list'><p style='text-align:center;'>Загрузка докладов...</p></div>";
+            let list = document.querySelector("#talk-list");
+            for(let i of result) {
+                document.querySelector("#room-select").innerHTML += `<option id='${i.Key}'>${i.Name}</option>`;
+            }
         $.get(server + `getSpeakerTalks?userkey=${getCookie("db-key")}`)
         .then(res => {
             let toAdd = "";
@@ -56,9 +64,10 @@ function showTalksSpeaker() {
             }
             list.innerHTML = toAdd;
         });
+    });
     }
     else {
-        list.innerHTML = "<p style='text-align:center;'>Извините, но доступ к докладам имеет только докладчик.</p>";
+        list.innerHTML = "<p style='text-align:center;'>Извините, но доступ к докладам имеет только спикер.</p>";
     }
 }
 

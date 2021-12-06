@@ -3,6 +3,7 @@ const cors = require("cors");
 const path = require("path");
 const {queryExec} = require("./db");
 const {MD5Encrypt} = require("./encrypt");
+const { copyFileSync } = require("fs");
 
 const app = express();
 
@@ -84,6 +85,20 @@ app.get('/getSpeakerTalks', function (req, res) {
     });
 });
 
+app.get('/getRoomList', function (req, res) {
+    queryExec("SELECT * FROM room;")
+    .then(result => {
+        res.json(result);
+    });
+});
+
+app.get('/getScheduleTimes', function (req, res) {
+    queryExec("SELECT DateFrom, DateTo FROM schedule;")
+    .then(result => {
+        res.json(result);
+    });
+});
+
 // Посты
 app.post('/regNewUser', function (req, res) {
     queryExec(`INSERT INTO user (Name, Surname, Patronymic, Login, Password, Role_Key) VALUES ('${req.body.name}', '${req.body.surname}', '${req.body.patronymic}', '${req.body.login}', '${MD5Encrypt(req.body.password)}', 2);`)
@@ -145,6 +160,17 @@ app.post('/unsubToTalk', function (req, res) {
     queryExec(`DELETE FROM user_sub WHERE (User_Key = ${req.body.userkey} AND Schedule_Key = ${req.body.schedulekey});`)
     .then(result => {
         res.send(result);
+    });
+});
+
+app.post('/regNewTalk', function (req, res) {
+    queryExec(`SELECT * FROM schedule, room WHERE ((CONVERT('${req.body.datefrom}', DATETIME) <= schedule.DateTo) AND (CONVERT('${req.body.dateto}', DATETIME) >= schedule.DateFrom) AND Room_Key = ${req.body.rkey});`)
+    .then(result => {
+        if(result.length > 0) {
+            res.send("Err");
+        } else {
+            
+        }
     });
 });
 

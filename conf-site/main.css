@@ -66,6 +66,12 @@ z-index: 9999;
     margin-right: auto;
 }
 
+.datetime-input {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
 .inline-btn {
     margin-left: auto;
     margin-right: auto;
