@@ -169,7 +169,29 @@ app.post('/regNewTalk', function (req, res) {
         if(result.length > 0) {
             res.send("Err");
         } else {
-            
+            queryExec(`SELECT talk.Key FROM talk WHERE talk.Name = '${req.body.talkname}';`)
+            .then(result1 => {
+                if(result1.length == 0) {
+                    queryExec(`INSERT INTO talk (Name) VALUES ('${req.body.talkname}');`)
+                    .then(res1 => {
+                        queryExec("SELECT talk.Key FROM talk;").then(result2 => {
+                        queryExec(`INSERT INTO schedule (DateFrom, DateTo, Talk_Key, Room_Key) VALUES ('${req.body.datefrom}', '${req.body.dateto}', ${result2[result2.length - 1].Key}, ${req.body.rkey});`)
+                        .then(res3 => {
+                            queryExec("SELECT schedule.Key FROM schedule;").then(result3 => {
+                            queryExec(`INSERT INTO user_talk (User_Key, Schedule_Key) VALUES (${req.body.dbkey}, ${result3[result3.length - 1].Key});`);
+                        });
+                        });
+                    });
+                    });
+                } else {
+                    queryExec(`INSERT INTO schedule (DateFrom, DateTo, Talk_Key, Room_Key) VALUES ('${req.body.datefrom}', '${req.body.dateto}', ${result1[0].Key}, ${req.body.rkey});`)
+                    .then(res2 => {
+                        queryExec("SELECT schedule.Key FROM schedule;").then(result2 => {
+                        queryExec(`INSERT INTO user_talk (User_Key, Schedule_Key) VALUES (${req.body.dbkey}, ${result2[result2.length - 1].Key});`);
+                    });
+                  });
+                }
+            });
         }
     });
 });

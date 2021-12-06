@@ -43,7 +43,7 @@ function showTalksSpeaker() {
         $.get(server + 'getRoomList')
         .then(result => {
             canvas.innerHTML = "<form><p style='text-align:center'>Регистрация доклада<p>" +
-            `<p><input class='news-input' type='text' id='red-surname' placeholder='Название' size='18'/></p>` + 
+            `<p><input class='news-input' type='text' id='red-talkname' placeholder='Название' size='18'/></p>` + 
             `<select class='news-input' id='room-select'></select><p></p>` +
             `<div class='datetime-input'>С <input id='date-from' type='datetime-local'></input> по <input id='date-to' type='datetime-local'></input></div>` +
             `<p style='text-align:center;' id='talk-status'></p>` +
@@ -58,16 +58,18 @@ function showTalksSpeaker() {
             let toAdd = "";
             if(res.length == 0) {
                 toAdd = "<p style='text-align:center;'>Вы не зарегистрировали ни одного доклада!</p>";
-            }
+            } else {
+                toAdd = "<h2 style='text-align:center;'>Ваши доклады</h2>";
             for(let i of res) {
                 toAdd += `<hr color="black" noshade>Доклад: ${i.TName}. Аудитория: ${i.RName}. Время проведения с ${i.DateFrom} по ${i.DateTo}.`;
             }
+        }
             list.innerHTML = toAdd;
         });
     });
     }
     else {
-        list.innerHTML = "<p style='text-align:center;'>Извините, но доступ к докладам имеет только спикер.</p>";
+        canvas.innerHTML = "<p style='text-align:center;'>Извините, но доступ к докладам имеет только спикер.</p>";
     }
 }
 
