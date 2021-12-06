@@ -60,11 +60,12 @@ function login() {
                 $.get(server + `getUserDataByLogin?login=${lloginPrompt.value}`, resg => {
                     document.cookie = "logged-in=true";
                     document.cookie = `login=${resg[0].Login}`;
-                    document.cookie = `name=${resg[0].Name}`;
+                    document.cookie = `name=${resg[0].UName}`;
                     document.cookie = `surname=${resg[0].Surname}`;
                     document.cookie = `patronymic=${resg[0].Patronymic}`;
                     document.cookie = `role-key=${resg[0].Role_Key}`;
-                    document.cookie = `db-key=${resg[0].Key}`;
+                    document.cookie = `role-alt-name=${resg[0].RAlt}`;
+                    document.cookie = `db-key=${resg[0].UKey}`;
                     setTimeout(window.location = "index.html", 1000);
                 });
             } else {

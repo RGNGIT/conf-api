@@ -64,7 +64,7 @@ app.get('/getUserDataByKey', function (req, res) {
 
 
 app.get('/getUserDataByLogin', function (req, res) {
-    queryExec(`SELECT * FROM user WHERE (Login='${req.query.login}');`)
+    queryExec(`SELECT *, role.Alt_Name AS RAlt, user.Key AS UKey, role.Key AS RKey, user.Name as UName FROM user, role WHERE (Login='${req.query.login}');`)
     .then(result => {
         res.json(result);
     });
@@ -72,6 +72,13 @@ app.get('/getUserDataByLogin', function (req, res) {
 
 app.get('/getUserSubs', function (req, res) {
     queryExec(`SELECT schedule.Key AS SKey, talk.Name AS TName, schedule.DateFrom, schedule.DateTo, room.Name AS RName FROM talk, schedule, room, user, user_sub WHERE schedule.Room_Key = room.Key AND schedule.Talk_Key = talk.Key AND user_sub.User_Key = user.Key AND schedule.Key = user_sub.Schedule_Key AND user.Key = ${req.query.userkey};`)
+    .then(result => {
+        res.json(result);
+    });
+});
+
+app.get('/getSpeakerTalks', function (req, res) {
+    queryExec(`SELECT schedule.Key AS SKey, talk.Name AS TName, schedule.DateFrom, schedule.DateTo, room.Name AS RName FROM talk, schedule, room, user, user_talk WHERE schedule.Room_Key = room.Key AND schedule.Talk_Key = talk.Key AND user_talk.User_Key = user.Key AND schedule.Key = user_talk.Schedule_Key AND user.Key = ${req.query.userkey};`)
     .then(result => {
         res.json(result);
     });

@@ -23,7 +23,7 @@ function showUsers() {
                 }
                 toAdd += 
                 `<div id='user-${i.Key}''>` +
-                `<hr color="black" noshade>ФИО: ${i.Surname} ${i.Name} ${i.Patronymic} | ${i.RName}.` +
+                `<hr color="black" noshade>ФИО: ${i.Surname} ${i.Name} ${i.Patronymic} | ${i.Alt_Name}.` +
                 `<button id='${i.Key}' style='float:right;' onclick='deleteUser(id)'>Удалить</button>` +
                 `<button id='${i.Key}' style='float:right;' onclick='redactUser(id, document.querySelector("#redact-" + id))'>Редактировать</button>` +
                 `<div id='redact-${i.Key}'></div>` +
@@ -40,10 +40,25 @@ function showUsers() {
 
 function showTalksSpeaker() {
     if(role == '3') {
-        canvas.innerHTML = "<p style='text-align:center;'>Загрузка докладов...</p>";
+        canvas.innerHTML = "<form><p style='text-align:center'>Регистрация доклада<p>" +
+        `<p><input class='news-input' type='text' id='red-surname' placeholder='Название' size='18'/></p>` + 
+        `</form><div style='text-align: center;'><button class='inline-btn' onclick=''>Зарегистрировать</button></div>`;
+        canvas.innerHTML += "<hr color='black' noshade><div id='talk-list'><p style='text-align:center;'>Загрузка докладов...</p></div>";
+        let list = document.querySelector("#talk-list");
+        $.get(server + `getSpeakerTalks?userkey=${getCookie("db-key")}`)
+        .then(res => {
+            let toAdd = "";
+            if(res.length == 0) {
+                toAdd = "<p style='text-align:center;'>Вы не зарегистрировали ни одного доклада!</p>";
+            }
+            for(let i of res) {
+                toAdd += `<hr color="black" noshade>Доклад: ${i.TName}. Аудитория: ${i.RName}. Время проведения с ${i.DateFrom} по ${i.DateTo}.`;
+            }
+            list.innerHTML = toAdd;
+        });
     }
     else {
-        canvas.innerHTML = "<p style='text-align:center;'>Извините, но доступ к докладам имеет только докладчик.</p>";
+        list.innerHTML = "<p style='text-align:center;'>Извините, но доступ к докладам имеет только докладчик.</p>";
     }
 }
 
@@ -68,6 +83,9 @@ function showTalksSchedule(toSort) {
     $.get(server + `getTalkList?toSort=${toSort}`)
     .then(resg => {
         let auditorium = "";
+        if(resg.length == 0) {
+            toAdd = "<p style='text-align:center;'>Нет ни одного доклада!</p>";
+        }
         for(let i of resg) {
             if(!ignore.includes(i.Key)) {
             if(i.RName != auditorium) {
@@ -87,6 +105,31 @@ function showTalksSchedule(toSort) {
 });
 }
 
+function showTalksScheduleLogout(toSort) {
+    canvas.innerHTML = "<p style='text-align:center;'>Загрузка расписания...</p>";
+    let id = 0;
+    let toAdd = "";
+    $.get(server + `getTalkList?toSort=${toSort}`)
+    .then(resg => {
+        let auditorium = "";
+        if(resg.length == 0) {
+            toAdd = "<p style='text-align:center;'>Нет ни одного доклада!</p>";
+        }
+        for(let i of resg) {
+            if(i.RName != auditorium) {
+                toAdd += `<h3 style="text-align:center;">Доклады в аудитории ${i.RName}</h3>`;
+                auditorium = i.RName;
+            }
+            toAdd += 
+            `<div id='talk-${id}''>` +
+            `<hr color="black" noshade>Доклад: ${i.TName}. Аудитория: ${i.RName}. Время проведения с ${i.DateFrom} по ${i.DateTo}.` +
+            `</div>`;
+            id++;
+        }
+        canvas.innerHTML = toAdd;
+    });
+}
+
 function regButtonAction() {
     if(getCookie("logged-in") == 'true') {
         document.cookie = "logged-in=false";
@@ -95,6 +138,7 @@ function regButtonAction() {
         document.cookie = `surname=`;
         document.cookie = `patronymic=`;
         document.cookie = `role-key=`;
+        document.cookie = `role-alt-name=`;
         document.cookie = `db-key=`;
         location.reload();
     } else {
@@ -106,7 +150,7 @@ function show(toShow) {
     switch(toShow) {
         case 'main':
             canvasHeader.innerHTML = "Главная. Расписание";
-            showTalksSchedule(true);
+            getCookie("logged-in") == "true" ? showTalksSchedule(true) : showTalksScheduleLogout(true);
             break;
         case 'talks':
             canvasHeader.innerHTML = "Доклады";
@@ -125,19 +169,7 @@ function show(toShow) {
 function init() {
     show('main');
     if(getCookie("logged-in") == 'true') {
-        let html = `Залогинен как ${getCookie("surname")} ${getCookie("name")} ${getCookie("patronymic")} | `;
-        switch(role) {
-            case '1':
-                html += "Админ";
-                break;
-            case '2':
-                html += "Слушатель";
-                break;
-            case '3':
-                html += "Спикер";
-                break;
-        }
-        userTag.innerHTML = html + " | Выйти из аккаунта";
+        userTag.innerHTML = `Залогинен как ${getCookie("surname")} ${getCookie("name")} ${getCookie("patronymic")} | ${getCookie("role-alt-name")} | Выйти из аккаунта`;
     }
 }
 
