@@ -8,6 +8,7 @@ const canvas = document.querySelector("#main-canvas");
 const canvasHeader = document.querySelector("#cnv-hdr");
 const userTag = document.querySelector("#user-tag");
 const role = getCookie("role-key");
+let isReady = true;
 
 function showUsers() {
     if(role == '1') {
@@ -31,15 +32,18 @@ function showUsers() {
                 id++;
             }
             canvas.innerHTML = toAdd;
+            isReady = true;
         });
     }
     else {
         canvas.innerHTML = "<p style='text-align:center;'>Извините, но доступ к списку пользователей имеет только администратор.</p>";
+        isReady = true;
     }
 }
 
 function showTalksSpeaker() {
     if(role == '3') {
+        canvas.innerHTML = "";
         $.get(server + 'getRoomList')
         .then(result => {
             canvas.innerHTML = "<form><p style='text-align:center'>Регистрация доклада<p>" +
@@ -61,15 +65,18 @@ function showTalksSpeaker() {
             } else {
                 toAdd = "<h2 style='text-align:center;'>Ваши доклады</h2>";
             for(let i of res) {
-                toAdd += `<hr color="black" noshade>Доклад: ${i.TName}. Аудитория: ${i.RName}. Время проведения с ${i.DateFrom} по ${i.DateTo}.`;
+                toAdd += `<hr color="black" noshade>Доклад: ${i.TName}. Аудитория: ${i.RName}. Время проведения с ${i.DateFrom} по ${i.DateTo}.` +
+                `<button id='${i.SKey}' style='float:right;' onclick='cancelTalk(id)'>${"Отменить"}</button>`;
             }
         }
             list.innerHTML = toAdd;
         });
+        isReady = true;
     });
     }
     else {
         canvas.innerHTML = "<p style='text-align:center;'>Извините, но доступ к докладам имеет только спикер.</p>";
+        isReady = true;
     }
 }
 
@@ -112,6 +119,7 @@ function showTalksSchedule(toSort) {
         }
         }
         canvas.innerHTML = toAdd;
+        isReady = true;
     });
 });
 }
@@ -138,6 +146,7 @@ function showTalksScheduleLogout(toSort) {
             id++;
         }
         canvas.innerHTML = toAdd;
+        isReady = true;
     });
 }
 
@@ -158,6 +167,8 @@ function regButtonAction() {
 }
 
 function show(toShow) {
+    if(isReady) {
+        isReady = false;
     switch(toShow) {
         case 'main':
             canvasHeader.innerHTML = "Главная. Расписание";
@@ -175,6 +186,7 @@ function show(toShow) {
             regButtonAction();
             break;
     }
+}
 }
 
 function init() {

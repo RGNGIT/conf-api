@@ -20,3 +20,10 @@ function regNewTalk() {
         }
     });
 }
+
+function cancelTalk(key) {
+    $.post(server + 'cancelTalk', {key:key})
+    .then(res => {
+        show('talks');
+    });
+}

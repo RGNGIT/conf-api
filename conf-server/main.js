@@ -3,8 +3,6 @@ const cors = require("cors");
 const path = require("path");
 const {queryExec} = require("./db");
 const {MD5Encrypt} = require("./encrypt");
-const { copyFileSync } = require("fs");
-
 const app = express();
 
 const corsOpt = {
@@ -158,6 +156,13 @@ app.post('/subToTalk', function (req, res) {
 
 app.post('/unsubToTalk', function (req, res) {
     queryExec(`DELETE FROM user_sub WHERE (User_Key = ${req.body.userkey} AND Schedule_Key = ${req.body.schedulekey});`)
+    .then(result => {
+        res.send(result);
+    });
+});
+
+app.post('/cancelTalk', function (req, res) {
+    queryExec(`DELETE FROM schedule WHERE schedule.Key = ${req.body.key};`)
     .then(result => {
         res.send(result);
     });
