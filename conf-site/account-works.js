@@ -4,6 +4,7 @@ window.getCookie = (name) => {
 }
 
 const server = "http://localhost:8080/";
+
 const lloginPrompt = document.querySelector("#l-login");
 const lpasswordPrompt = document.querySelector("#l-password");
 const rloginPrompt = document.querySelector("#r-login");
@@ -11,6 +12,7 @@ const rpasswordPrompt = document.querySelector("#r-password");
 const rnamePrompt = document.querySelector("#r-name");
 const rsurnamePrompt = document.querySelector("#r-surname");
 const rpatPrompt = document.querySelector("#r-pat");
+const remail = document.querySelector("#r-email");
 const statusLine = document.querySelector("#login-status");
 
 // Для регистрации
@@ -74,10 +76,26 @@ function login() {
     });
 }
 
+let codeHash;
+
+function sendConfirmation() {
+    $.post(server + 'confirmEmail', {email:remail.value}, res => {
+        codeHash = res;
+        document.querySelector("#on-reg-button").innerHTML = "<button class='inline-btn' onclick='onRegister()'>Подтвердить</button>";
+        document.querySelector("#confirm-block").innerHTML = "<p><input class='news-input' type='text' id='r-confirm' placeholder='Код подтверждения' size='18'/></p>";
+    });
+}
+
 function onLogin() {
     loginCheck();
 }
 
 function onRegister() {
-    regCheck();
+    $.post(server + 'confirmCode', {code:codeHash, entry:document.querySelector("#r-confirm").value}, res => {
+        if(res == "Ok") {
+            register();
+        } else {
+            statusLine.innerHTML = "Неверный код!";
+        }
+    });
 }

@@ -35,9 +35,12 @@
                    <p><input class='news-input' type='text' id='r-pat' placeholder='Отчество' size='18'/></p>
                    <p><input class='news-input' type='text' id='r-login' placeholder='Логин' size='18'/></p>
                    <p><input class='news-input' type='password' id='r-password' placeholder='Пароль' size='18'/></p>
+                   <p><input class='news-input' type='text' id='r-email' placeholder='Эл-почта' size='18'/></p>
+                   <div id="confirm-block">
+                   </div>
                 </form>
-                <div style="text-align: center;">
-                <button class='inline-btn' onclick='onRegister()'>Зарегаться</button>
+                <div id="on-reg-button" style="text-align: center;">
+                <button class='inline-btn' onclick='sendConfirmation()'>Зарегаться</button>
                 </div>
                </div>
                <p class='canvas-header' id="login-status"></p>

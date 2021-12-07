@@ -4,6 +4,7 @@ window.getCookie = (name) => {
 }
 
 const server = "http://localhost:8080/";
+
 const canvas = document.querySelector("#main-canvas");
 const canvasHeader = document.querySelector("#cnv-hdr");
 const userTag = document.querySelector("#user-tag");

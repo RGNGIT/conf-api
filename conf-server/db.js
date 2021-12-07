@@ -4,7 +4,7 @@ function openConnection() {
 console.log(`Коннекшн открыт. Выполняю запрос...`);
 return new Promise((resolve, reject) => {
   const connection = mysql.createConnection( {
-    host: "db.19ivt.ru",
+    host: "watest.19ivt.ru",
     user: "osu",
     database: "conf-db",
     password: "12345"

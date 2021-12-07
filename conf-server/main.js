@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const nm = require("nodemailer");
 const {queryExec} = require("./db");
 const {MD5Encrypt} = require("./encrypt");
 const app = express();
@@ -17,6 +18,28 @@ app.use(express.static(static_path));
 app.use(express.urlencoded({ extended: true }));
 
 // Рабочий спейс
+
+function generateRandom() {
+    return Math.floor(100000 + Math.random() * 900000);
+}
+
+async function confirmEmail(code, email) {
+    let transporter = nm.createTransport({
+        sendmail: true,
+        newline: 'unix',
+        path: '/usr/sbin/sendmail'
+    });
+    let info = await transporter.sendMail({
+        from: 'Conference',
+        to: email,
+        subject: "Подтверждение регистрации на конференции",
+        text: `Код для подтверждения регистрации: ${code}`,
+        html: `<b>Код для подтверждения регистрации: ${code}</b>`,
+    });
+    console.log("Message sent: %s", info.messageId);
+    console.log("Preview URL: %s", nm.getTestMessageUrl(info));
+    return MD5Encrypt(`${code}`);
+}
 
 // Запросы на получить чето
 // Получение списка ролей
@@ -203,6 +226,20 @@ app.post('/regNewTalk', function (req, res) {
     });
 });
 
-app.listen(8080, () => {
+app.post('/confirmEmail', (req, res) => {
+        confirmEmail(generateRandom(), req.body.email).then(result => {
+            res.send(result);
+        });
+});
+
+app.post('/confirmCode', (req, res) => {
+    if(MD5Encrypt(req.body.code) == MD5Encrypt(req.body.entry)) {
+        res.send("Ok");
+    } else {
+        res.send("Err");
+    }
+});
+
+app.listen(8000, () => {
     console.log("Сервер запущен.");
 });
