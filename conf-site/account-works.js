@@ -34,6 +34,7 @@ function register() {
         name:`${rnamePrompt.value}`,
         surname:`${rsurnamePrompt.value}`,
         patronymic:`${rpatPrompt.value}`,
+        email:`${remail.value}`
         }, res => {
             console.log(res);
     });

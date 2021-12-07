@@ -121,7 +121,7 @@ app.get('/getScheduleTimes', function (req, res) {
 
 // Посты
 app.post('/regNewUser', function (req, res) {
-    queryExec(`INSERT INTO user (Name, Surname, Patronymic, Login, Password, Role_Key) VALUES ('${req.body.name}', '${req.body.surname}', '${req.body.patronymic}', '${req.body.login}', '${MD5Encrypt(req.body.password)}', 2);`)
+    queryExec(`INSERT INTO user (Name, Surname, Patronymic, Login, Password, Email, Role_Key) VALUES ('${req.body.name}', '${req.body.surname}', '${req.body.patronymic}', '${req.body.login}', '${MD5Encrypt(req.body.password)}', '${req.body.email}', 2);`)
     .then(suc => {
         res.send("Done");
     },
