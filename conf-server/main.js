@@ -36,8 +36,7 @@ async function confirmEmail(code, email) {
         text: `Код для подтверждения регистрации: ${code}`,
         html: `<b>Код для подтверждения регистрации: ${code}</b>`,
     });
-    console.log("Message sent: %s", info.messageId);
-    console.log("Preview URL: %s", nm.getTestMessageUrl(info));
+    console.log(`Отправлено письмо подтверждения: ${info.messageId}`);
     return MD5Encrypt(`${code}`);
 }
 
@@ -228,12 +227,13 @@ app.post('/regNewTalk', function (req, res) {
 
 app.post('/confirmEmail', (req, res) => {
         confirmEmail(generateRandom(), req.body.email).then(result => {
+            console.log(`Сгенерированый хеш: ${result}`);
             res.send(result);
         });
 });
 
-app.post('/confirmCode', (req, res) => {
-    if(MD5Encrypt(req.body.code) == MD5Encrypt(req.body.entry)) {
+app.post('/confirmCode', (req, res) => {ы
+    if(req.body.code == MD5Encrypt(req.body.entry)) {
         res.send("Ok");
     } else {
         res.send("Err");
