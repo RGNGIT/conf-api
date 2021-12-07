@@ -4,6 +4,12 @@ window.getCookie = (name) => {
 }
 
 function regNewTalk() {
+    if((new Date(document.querySelector("#date-from").value) > new Date(document.querySelector("#date-to").value)) || 
+    (document.querySelector("#date-from").value == '' || 
+    document.querySelector("#date-to").value == '')) {
+        document.querySelector("#talk-status").innerHTML = "Недопустимый диапазон дат!";
+    } else {
+    document.querySelector("#talk-status").innerHTML = "Попытка зарегистрировать доклад в базе...";
     $.post(server + 'regNewTalk', 
     { 
         talkname:document.querySelector("#red-talkname").value,
@@ -19,6 +25,7 @@ function regNewTalk() {
             show('talks');
         }
     });
+}
 }
 
 function cancelTalk(key) {

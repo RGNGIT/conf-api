@@ -63,7 +63,7 @@ app.get('/getUserDataByKey', function (req, res) {
 
 
 app.get('/getUserDataByLogin', function (req, res) {
-    queryExec(`SELECT *, role.Alt_Name AS RAlt, user.Key AS UKey, role.Key AS RKey, user.Name as UName FROM user, role WHERE (Login='${req.query.login}');`)
+    queryExec(`SELECT *, role.Alt_Name AS RAlt, user.Key AS UKey, role.Key AS RKey, user.Name as UName FROM user, role WHERE (Login='${req.query.login}' AND role.Key = user.Role_Key);`)
     .then(result => {
         res.json(result);
     });
@@ -183,7 +183,8 @@ app.post('/regNewTalk', function (req, res) {
                         queryExec(`INSERT INTO schedule (DateFrom, DateTo, Talk_Key, Room_Key) VALUES ('${req.body.datefrom}', '${req.body.dateto}', ${result2[result2.length - 1].Key}, ${req.body.rkey});`)
                         .then(res3 => {
                             queryExec("SELECT schedule.Key FROM schedule;").then(result3 => {
-                            queryExec(`INSERT INTO user_talk (User_Key, Schedule_Key) VALUES (${req.body.dbkey}, ${result3[result3.length - 1].Key});`);
+                            queryExec(`INSERT INTO user_talk (User_Key, Schedule_Key) VALUES (${req.body.dbkey}, ${result3[result3.length - 1].Key});`)
+                            .then(final => res.send(final));
                         });
                         });
                     });
@@ -192,7 +193,8 @@ app.post('/regNewTalk', function (req, res) {
                     queryExec(`INSERT INTO schedule (DateFrom, DateTo, Talk_Key, Room_Key) VALUES ('${req.body.datefrom}', '${req.body.dateto}', ${result1[0].Key}, ${req.body.rkey});`)
                     .then(res2 => {
                         queryExec("SELECT schedule.Key FROM schedule;").then(result2 => {
-                        queryExec(`INSERT INTO user_talk (User_Key, Schedule_Key) VALUES (${req.body.dbkey}, ${result2[result2.length - 1].Key});`);
+                        queryExec(`INSERT INTO user_talk (User_Key, Schedule_Key) VALUES (${req.body.dbkey}, ${result2[result2.length - 1].Key});`)
+                        .then(final => res.send(final));
                     });
                   });
                 }
