@@ -232,7 +232,7 @@ app.post('/confirmEmail', (req, res) => {
         });
 });
 
-app.post('/confirmCode', (req, res) => {ы
+app.post('/confirmCode', (req, res) => {
     if(req.body.code == MD5Encrypt(req.body.entry)) {
         res.send("Ok");
     } else {
