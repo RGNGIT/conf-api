@@ -25,7 +25,7 @@ function redactUser(key, context) {
         `<p><input class='news-input' type='text' id='red-name' placeholder='Имя' value='${res[0].Name}' size='18'/></p>` +
         `<p><input class='news-input' type='text' id='red-pat' placeholder='Отчество' value='${res[0].Patronymic}' size='18'/></p>` +
         `<p><input class='news-input' type='text' id='red-login' placeholder='Логин' value='${res[0].Login}' size='18' /></p>` +
-        `<p><input class='news-input' type='text' id='red-email' placeholder='Логин' value='${res[0].Email}' size='18' /></p>` +
+        `<p><input class='news-input' type='text' id='red-email' placeholder='Email' value='${res[0].Email}' size='18' /></p>` +
         (res[0].Role_Key != 1 ? (`<select class='news-input' id='red-role'><option>Слушатель</option><option>Спикер</option></select><p></p>`) : '<p style="text-align:center">Роль админа изменить может только бог!<p>') +
         `</form><div style='text-align: center;'><button class='inline-btn' onclick='apply(${key}, ${res[0].Role_Key == 1 ? true : false})'>Применить</button></div>`;
     });

@@ -34,7 +34,7 @@ async function confirmEmail(code, email, userbox) {
         to: email,
         subject: "Подтверждение регистрации на конференции",
         text: `Код для подтверждения регистрации: ${code}`,
-        html: `<h1>Здравстуйте, господин ${userbox.surname} ${userbox.name} ${userbox.pat}. Ваш код для подтверждения регистрации:</h1><h1 style="font-size: 60px; position: absolute; top: 37%; left: 10%">${code}</h1></img>`,
+        html: `<h1>Здравстуйте, господин ${userbox.surname} ${userbox.name} ${userbox.pat}. Ваш код для подтверждения регистрации: <br>${code}</h1>`,
     });
     console.log(`Отправлено письмо подтверждения: ${info.messageId}`);
     return MD5Encrypt(`${code}`);
@@ -232,7 +232,7 @@ app.post('/confirmEmail', (req, res) => {
         });
 });
 
-app.post('/confirmCode', (req, res) => {ы
+app.post('/confirmCode', (req, res) => {
     if(req.body.code == MD5Encrypt(req.body.entry)) {
         res.send("Ok");
     } else {
