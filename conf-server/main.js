@@ -23,7 +23,7 @@ function generateRandom() {
     return Math.floor(100000 + Math.random() * 900000);
 }
 
-async function confirmEmail(code, email) {
+async function confirmEmail(code, email, userbox) {
     let transporter = nm.createTransport({
         sendmail: true,
         newline: 'unix',
@@ -34,7 +34,7 @@ async function confirmEmail(code, email) {
         to: email,
         subject: "Подтверждение регистрации на конференции",
         text: `Код для подтверждения регистрации: ${code}`,
-        html: `<b>Код для подтверждения регистрации: ${code}</b>`,
+        html: `<h1>Здравстуйте, господин ${userbox.surname} ${userbox.name} ${userbox.pat}. Ваш код для подтверждения регистрации:</h1><h1 style="font-size: 60px; position: absolute; top: 37%; left: 10%">${code}</h1></img>`,
     });
     console.log(`Отправлено письмо подтверждения: ${info.messageId}`);
     return MD5Encrypt(`${code}`);
@@ -226,13 +226,13 @@ app.post('/regNewTalk', function (req, res) {
 });
 
 app.post('/confirmEmail', (req, res) => {
-        confirmEmail(generateRandom(), req.body.email).then(result => {
+        confirmEmail(generateRandom(), req.body.email, req.body.userbox).then(result => {
             console.log(`Сгенерированый хеш: ${result}`);
             res.send(result);
         });
 });
 
-app.post('/confirmCode', (req, res) => {
+app.post('/confirmCode', (req, res) => {ы
     if(req.body.code == MD5Encrypt(req.body.entry)) {
         res.send("Ok");
     } else {

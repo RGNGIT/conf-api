@@ -80,7 +80,7 @@ function login() {
 let codeHash;
 
 function sendConfirmation() {
-    $.post(server + 'confirmEmail', {email:remail.value}, res => {
+    $.post(server + 'confirmEmail', {email:remail.value, userbox:{name:rnamePrompt.value, surname:rsurnamePrompt.value, pat:rpatPrompt.value}}, res => {
         codeHash = res;
         document.querySelector("#on-reg-button").innerHTML = "<button class='inline-btn' onclick='onRegister()'>Подтвердить</button>";
         document.querySelector("#confirm-block").innerHTML = "<p><input class='news-input' type='text' id='r-confirm' placeholder='Код подтверждения' size='18'/></p>";
