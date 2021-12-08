@@ -3,7 +3,7 @@ window.getCookie = (name) => {
     if (match) return match[2];
 }
 
-const server = "http://localhost:8080/";
+const server = "http://watest.19ivt.ru/";
 
 const canvas = document.querySelector("#main-canvas");
 const canvasHeader = document.querySelector("#cnv-hdr");

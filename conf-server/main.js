@@ -163,7 +163,7 @@ app.post('/deleteUser', function (req, res) {
 });
 
 app.post('/updateUser', function (req, res) {
-    queryExec(`UPDATE user SET Name = '${req.body.name}', Surname = '${req.body.surname}', Patronymic = '${req.body.patronymic}', Login = '${req.body.login}', Role_Key = ${req.body.rolekey} WHERE user.Key = ${req.body.userkey};`)
+    queryExec(`UPDATE user SET Name = '${req.body.name}', Surname = '${req.body.surname}', Patronymic = '${req.body.patronymic}', Login = '${req.body.login}', Email = '${req.body.email}', Role_Key = ${req.body.rolekey} WHERE user.Key = ${req.body.userkey};`)
     .then(result => {
         res.send(result);
     });
