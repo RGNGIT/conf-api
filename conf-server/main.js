@@ -191,7 +191,7 @@ app.post('/cancelTalk', function (req, res) {
 });
 
 app.post('/regNewTalk', function (req, res) {
-    queryExec(`SELECT * FROM schedule, room WHERE ((CONVERT('${req.body.datefrom}', DATETIME) <= schedule.DateTo) AND (CONVERT('${req.body.dateto}', DATETIME) >= schedule.DateFrom) AND Room_Key = ${req.body.rkey});`)
+    queryExec(`SELECT * FROM schedule, room WHERE ((CONVERT('${req.body.datefrom}', DATETIME) < schedule.DateTo) AND (CONVERT('${req.body.dateto}', DATETIME) > schedule.DateFrom) AND Room_Key = ${req.body.rkey});`)
     .then(result => {
         if(result.length > 0) {
             res.send("Err");
